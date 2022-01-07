@@ -262,8 +262,8 @@ classdef shutter < handle
                     inactive_enumIndx = find(arrayfun(@(n) strncmpi(char(states_enum.GetEnumValues.Get(n-1)), inactive_enumName , length(inactive_enumName)), 1:states_enum.GetEnumValues.GetLength(0)));
                     active_enumName = 'Active';
                     active_enumIndx = find(arrayfun(@(n) strncmpi(char(states_enum.GetEnumValues.Get(n-1)), active_enumName, length(active_enumName)), 1:states_enum.GetEnumValues.GetLength(0)));
-                    h.OPSTATE_ACTIVE = states_enum.GetEnumValues().Get(active_enumIndx);
-                    h.OPSTATE_INACTIVE = states_enum.GetEnumValues().Get(inactive_enumIndx);
+                    h.OPSTATE_ACTIVE = states_enum.GetEnumValues().Get(active_enumIndx-1);
+                    h.OPSTATE_INACTIVE = states_enum.GetEnumValues().Get(inactive_enumIndx-1);
                     h.OPSTATE = {h.OPSTATE_INACTIVE, h.OPSTATE_ACTIVE};
 
                     ehOpModes = assemblies.Get(asmidx-1).GetType('Thorlabs.MotionControl.KCube.SolenoidCLI.SolenoidStatus+OperatingModes');
@@ -276,7 +276,6 @@ classdef shutter < handle
                     error(['Unable to initialise device ',char(serialNo)]);
                 end
                 fprintf('Shutter %s with S/N %s is connected successfully!\n',h.controllername,h.serialnumber);
-                updatestatus(h);   % Update status variables from device
             else % Device is already connected
                 error('Device is already connected.')
             end
